@@ -2017,8 +2017,59 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1275153892}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1250839705
-BoxCollider:
+--- !u!114 &1250839707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250839701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e60eb4f187f40eb9983bf6d527e4f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1250839708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250839701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e8a620bb62d3d4fefbee86d47333570c,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 54ab535a-29ca-4839-9046-83dd45e68436
+    m_ActionName: CharacterControls/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3360e401-2dcf-47f4-a320-3af6450c770e
+    m_ActionName: CharacterControls/CameraRotate[/Mouse/delta]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: CharacterControls
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!143 &1250839711
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2036,35 +2087,13 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.7879003, z: 0.7740288}
-  m_Center: {x: 0, y: 0.8949848, z: -0.039110422}
---- !u!54 &1250839706
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250839701}
-  serializedVersion: 4
-  m_Mass: 75
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Height: 1.79
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.03
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.895, z: 0}
 --- !u!1 &1256364086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,11 +2211,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1b25bf7df4f7478992bbec4c445bdbd,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1250839706}
+      addedObject: {fileID: 1250839711}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1b25bf7df4f7478992bbec4c445bdbd,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1250839705}
+      addedObject: {fileID: 1250839707}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1b25bf7df4f7478992bbec4c445bdbd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1250839708}
   m_SourcePrefab: {fileID: 100100000, guid: a1b25bf7df4f7478992bbec4c445bdbd, type: 3}
 --- !u!1 &1425243469 stripped
 GameObject:
