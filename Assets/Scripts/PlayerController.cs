@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject mainCamera;
 
+    private GameManager gm;
     private CharacterController characterController;
     private Animator characterAnimator;
     private Vector2 moving = new();
@@ -13,11 +14,10 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        gm = GameManager.instance;
+
         characterController = GetComponent<CharacterController>();
         characterAnimator = GetComponent<Animator>();
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
