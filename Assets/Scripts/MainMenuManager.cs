@@ -3,9 +3,6 @@ using UnityEngine;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject UIMenu;
-
-    [SerializeField]
     private GameObject mainCharacter;
 
     private GameManager gm;
@@ -14,7 +11,7 @@ public class MainMenuManager : MonoBehaviour
     {
         gm = GameManager.instance;
 
-        gm.ChangeCursorUIButtons(UIMenu);
+        gm.ShowCursor();
         mainCharacter.GetComponent<Animator>().SetBool("IsDancing", true);
     }
 }
