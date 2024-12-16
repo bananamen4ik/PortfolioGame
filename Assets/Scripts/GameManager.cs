@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 [DefaultExecutionOrder(-1)]
 public class GameManager : MonoBehaviour
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject UIPauseMenu;
+
+    private GameObject lastActiveVirtualCamera;
 
     private void Awake()
     {
@@ -98,12 +101,22 @@ public class GameManager : MonoBehaviour
         UIPauseMenu.SetActive(!UIPauseMenu.activeSelf);
         isPaused = !isPaused;
 
+        CinemachineBrain mainCameraBrain =
+            GameObject.FindWithTag("MainCamera").GetComponent<CinemachineBrain>();
+
         if (isPaused)
         {
+            lastActiveVirtualCamera =
+                mainCameraBrain.ActiveVirtualCamera.VirtualCameraGameObject;
+
+            lastActiveVirtualCamera.SetActive(false);
+
             ShowCursor();
         }
         else
         {
+            lastActiveVirtualCamera.SetActive(true);
+
             HideCursor();
         }
     }

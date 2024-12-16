@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject mainCamera;
 
+    private GameManager gm;
+
     private CharacterController characterController;
     private Animator characterAnimator;
     private Vector2 moving = new();
@@ -13,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        gm = GameManager.instance;
+
         characterController = GetComponent<CharacterController>();
         characterAnimator = GetComponent<Animator>();
     }
@@ -41,6 +45,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
+        if (gm.isPaused) return;
+
         moving = value.Get<Vector2>();
 
         if (moving != Vector2.zero)
