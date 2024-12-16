@@ -3,13 +3,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using Cinemachine;
 
 [DefaultExecutionOrder(-1)]
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public PlayerController playerController;
     public bool isPaused = false;
+    public bool isOpenedQuestDialog = false;
 
     [SerializeField]
     private Texture2D cursorTexture;
@@ -26,98 +27,50 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject UIPauseMenu;
 
-    private GameObject lastActiveVirtualCamera;
-
-    private void Awake()
+    public void ShowQuestDialog(GameObject questDialog)
     {
-        if (instance != null)
+        questDialog.SetActive(true);
+        isOpenedQuestDialog = true;
+        PauseGame();
+    }
+
+    public void HideQuestDialog(GameObject questDialog)
+    {
+        questDialog.SetActive(false);
+        isOpenedQuestDialog = false;
+        ContinueGame();
+    }
+
+    public GameObject GetPlayer()
+    {
+        return GameObject.FindWithTag("Player");
+    }
+
+    public void PauseGame(bool withUIPauseMenu = false)
+    {
+        playerController.FreezeCamera();
+        playerController.FreezeMove();
+
+        ShowCursor();
+        isPaused = true;
+
+        if (withUIPauseMenu)
         {
-            Destroy(gameObject);
-            return;
-        }
-
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        eventSystem.SetActive(true);
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void Start()
-    {
-        SetDefaultCursor();
-        InitInputSystem();
-        ChangeCursorUIButtons(UIPauseMenu);
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
-    {
-        if (scene.buildIndex == 0)
-        {
-            GameObject mainMenu = GameObject.FindWithTag("UIMainMenu");
-            Button[] buttons = mainMenu.GetComponentsInChildren<Button>();
-            ChangeCursorUIButtons(mainMenu);
-
-            foreach (Button button in buttons)
-            {
-                switch (button.name)
-                {
-                    case "StartButton":
-                        button.onClick.AddListener(StartGame);
-                        break;
-
-                    case "SettingsButton":
-                        break;
-
-                    case "CreditsButton":
-                        break;
-
-                    case "ExitButton":
-                        button.onClick.AddListener(ExitGame);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
+            ShowUIPauseMenu();
         }
     }
 
-    private void InitInputSystem()
+    public void ContinueGame(bool withUIPauseMenu = false)
     {
-        InputAction ESCAction = inputActions.FindActionMap("UI").FindAction("ESC");
-        ESCAction.Enable();
-        ESCAction.performed += (InputAction.CallbackContext ctx) => Pause();
-    }
+        playerController.UnFreezeCamera();
+        playerController.UnFreezeMove();
 
-    public void Pause()
-    {
-        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+        HideCursor();
+        isPaused = false;
 
-        UIPauseMenu.SetActive(!UIPauseMenu.activeSelf);
-        isPaused = !isPaused;
-
-        CinemachineBrain mainCameraBrain =
-            GameObject.FindWithTag("MainCamera").GetComponent<CinemachineBrain>();
-
-        if (isPaused)
+        if (withUIPauseMenu)
         {
-            lastActiveVirtualCamera =
-                mainCameraBrain.ActiveVirtualCamera.VirtualCameraGameObject;
-
-            lastActiveVirtualCamera.SetActive(false);
-
-            ShowCursor();
-        }
-        else
-        {
-            lastActiveVirtualCamera.SetActive(true);
-
-            HideCursor();
+            HideUIPauseMenu();
         }
     }
 
@@ -180,7 +133,7 @@ public class GameManager : MonoBehaviour
     {
         if (fromPauseMenu)
         {
-            Pause();
+            ContinueGame(true);
         }
 
         SceneManager.LoadScene(0);
@@ -198,5 +151,68 @@ public class GameManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void ShowUIPauseMenu()
+    {
+        UIPauseMenu.SetActive(true);
+    }
+
+    public void HideUIPauseMenu()
+    {
+        UIPauseMenu.SetActive(false);
+    }
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        eventSystem.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        SetDefaultCursor();
+        InitInputSystem();
+        ChangeCursorUIButtons(UIPauseMenu);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        playerController = GetPlayer().GetComponent<PlayerController>();
+    }
+
+    private void InitInputSystem()
+    {
+        InputAction ESCAction = inputActions.FindActionMap("UI").FindAction("ESC");
+        ESCAction.Enable();
+        ESCAction.performed += (InputAction.CallbackContext ctx) => OnESCKeyPressed();
+    }
+
+    private void OnESCKeyPressed()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+        if (isOpenedQuestDialog) return;
+
+        if (!isPaused)
+        {
+            PauseGame(true);
+        }
+        else
+        {
+            ContinueGame(true);
+        }
     }
 }

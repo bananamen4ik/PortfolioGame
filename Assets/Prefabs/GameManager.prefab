@@ -558,6 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+  isOpenedQuestDialog: 0
   cursorTexture: {fileID: 2800000, guid: 2fe4e774894504f078bb7d8b1fdc5924, type: 3}
   handCursorTexture: {fileID: 2800000, guid: 72a7e615dc91c488c9929ab938c7e5f8, type: 3}
   inputActions: {fileID: -944628639613478452, guid: e8a620bb62d3d4fefbee86d47333570c,
@@ -867,15 +868,15 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4014220246520063918}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Pause
-        m_Mode: 1
+        m_MethodName: ContinueGame
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &6496616562042864068
 GameObject:
@@ -1117,7 +1118,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &2342780957363135381
 MonoBehaviour:

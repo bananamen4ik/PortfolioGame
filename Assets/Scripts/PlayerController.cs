@@ -1,22 +1,63 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+using Cinemachine;
+
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private GameObject mainCamera;
 
-    private GameManager gm;
-
     private CharacterController characterController;
     private Animator characterAnimator;
     private Vector2 moving = new();
     private readonly float speedMove = 2;
+    private GameObject lastActiveVirtualCamera;
+
+    public void FreezeCamera()
+    {
+        CinemachineBrain mainCameraBrain =
+            mainCamera.GetComponent<CinemachineBrain>();
+
+        lastActiveVirtualCamera =
+            mainCameraBrain.ActiveVirtualCamera.VirtualCameraGameObject;
+
+        lastActiveVirtualCamera.GetComponent<CinemachineInputProvider>()
+            .enabled = false;
+    }
+
+    public void UnFreezeCamera()
+    {
+        lastActiveVirtualCamera.GetComponent<CinemachineInputProvider>()
+            .enabled = true;
+    }
+
+    public void FreezeMove()
+    {
+        GetComponent<PlayerInput>().enabled = false;
+    }
+
+    public void UnFreezeMove()
+    {
+        GetComponent<PlayerInput>().enabled = true;
+    }
+
+    public void OnMove(InputValue value)
+    {
+        moving = value.Get<Vector2>();
+
+        if (moving != Vector2.zero)
+        {
+            characterAnimator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            characterAnimator.SetBool("IsWalking", false);
+        }
+    }
 
     private void Start()
     {
-        gm = GameManager.instance;
-
         characterController = GetComponent<CharacterController>();
         characterAnimator = GetComponent<Animator>();
     }
@@ -41,21 +82,5 @@ public class PlayerController : MonoBehaviour
 
         transform.forward = direction;
         characterController.Move(speedMove * Time.deltaTime * direction);
-    }
-
-    public void OnMove(InputValue value)
-    {
-        if (gm.isPaused) return;
-
-        moving = value.Get<Vector2>();
-
-        if (moving != Vector2.zero)
-        {
-            characterAnimator.SetBool("IsWalking", true);
-        }
-        else
-        {
-            characterAnimator.SetBool("IsWalking", false);
-        }
     }
 }
