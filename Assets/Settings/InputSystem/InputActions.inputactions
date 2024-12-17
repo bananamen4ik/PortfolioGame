@@ -13,15 +13,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "3360e401-2dcf-47f4-a320-3af6450c770e",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -123,10 +114,27 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
+                }
+            ]
+        },
+        {
+            "name": "PlayerCamera",
+            "id": "9ad570d8-7b6f-4166-9559-634bbb6a9bd6",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "0ef546fc-7d42-4b06-93af-2cbade8bc108",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "4c43225a-0aad-4f2e-89ba-64c3c1e87e12",
+                    "id": "28beafeb-258a-4ed9-9f70-1ca9beefc5f3",
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",

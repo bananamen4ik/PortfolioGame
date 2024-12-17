@@ -5,41 +5,53 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject characterCamera;
+    public bool isFreezeMove = false;
+    public bool isFreezeCamera = false;
+
     [SerializeField]
     private GameObject mainCamera;
 
     private CharacterController characterController;
     private Animator characterAnimator;
     private Vector2 moving = new();
+
     private readonly float speedMove = 2;
-    private GameObject lastActiveVirtualCamera;
+
+    public void TakeAnimaion()
+    {
+        characterAnimator.SetTrigger("PickUp");
+    }
 
     public void FreezeCamera()
     {
-        CinemachineBrain mainCameraBrain =
-            mainCamera.GetComponent<CinemachineBrain>();
-
-        lastActiveVirtualCamera =
-            mainCameraBrain.ActiveVirtualCamera.VirtualCameraGameObject;
-
-        lastActiveVirtualCamera.GetComponent<CinemachineInputProvider>()
+        characterCamera.GetComponent<CinemachineInputProvider>()
             .enabled = false;
+        isFreezeCamera = true;
     }
 
     public void UnFreezeCamera()
     {
-        lastActiveVirtualCamera.GetComponent<CinemachineInputProvider>()
+        characterCamera.GetComponent<CinemachineInputProvider>()
             .enabled = true;
+        isFreezeCamera = false;
     }
 
-    public void FreezeMove()
+    public void FreezeMove(float timeoutUnFreeze = 0)
     {
         GetComponent<PlayerInput>().enabled = false;
+        isFreezeMove = true;
+
+        if (timeoutUnFreeze != 0)
+        {
+            Invoke(nameof(UnFreezeMove), timeoutUnFreeze);
+        }
     }
 
     public void UnFreezeMove()
     {
         GetComponent<PlayerInput>().enabled = true;
+        isFreezeMove = false;
     }
 
     public void OnMove(InputValue value)

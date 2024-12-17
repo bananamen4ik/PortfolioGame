@@ -1,3 +1,5 @@
+using System.Collections;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,9 +10,9 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public PlayerController playerController;
+    public PlayerData playerData;
+
     public bool isPaused = false;
-    public bool isOpenedQuestDialog = false;
 
     [SerializeField]
     private Texture2D cursorTexture;
@@ -27,23 +29,56 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject UIPauseMenu;
 
+    private PlayerController playerController;
+
+    private bool isQuestDialogOpened = false;
+
+    public void ChangeCamera(
+        GameObject cameraFrom, GameObject cameraTo, float timeoutBack = 0)
+    {
+        cameraTo.SetActive(true);
+        cameraFrom.SetActive(false);
+
+        if (cameraFrom.CompareTag("CharacterCamera"))
+        {
+            playerController.FreezeMove();
+            playerController.FreezeCamera();
+        }
+        else if(cameraTo.CompareTag("CharacterCamera"))
+        {
+            playerController.UnFreezeMove();
+            playerController.UnFreezeCamera();
+        }
+
+        if (timeoutBack != 0)
+        {
+            StartCoroutine(
+                ChangeCameraBackTimeout(cameraTo, cameraFrom, timeoutBack));
+        }
+    }
+
     public void ShowQuestDialog(GameObject questDialog)
     {
+        isQuestDialogOpened = true;
         questDialog.SetActive(true);
-        isOpenedQuestDialog = true;
         PauseGame();
     }
 
     public void HideQuestDialog(GameObject questDialog)
     {
+        isQuestDialogOpened = false;
         questDialog.SetActive(false);
-        isOpenedQuestDialog = false;
         ContinueGame();
     }
 
     public GameObject GetPlayer()
     {
         return GameObject.FindWithTag("Player");
+    }
+
+    public PlayerController GetPlayerController()
+    {
+        return GetPlayer().GetComponent<PlayerController>();
     }
 
     public void PauseGame(bool withUIPauseMenu = false)
@@ -163,6 +198,14 @@ public class GameManager : MonoBehaviour
         UIPauseMenu.SetActive(false);
     }
 
+    private IEnumerator ChangeCameraBackTimeout(
+    GameObject cameraFrom, GameObject cameraTo, float timeout)
+    {
+        yield return new WaitForSeconds(timeout);
+
+        ChangeCamera(cameraFrom, cameraTo);
+    }
+
     private void Awake()
     {
         if (instance != null)
@@ -187,11 +230,17 @@ public class GameManager : MonoBehaviour
         SetDefaultCursor();
         InitInputSystem();
         ChangeCursorUIButtons(UIPauseMenu);
+        InitPlayerData();
+    }
+
+    private void InitPlayerData()
+    {
+        playerData = new(0, 0);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        playerController = GetPlayer().GetComponent<PlayerController>();
+        playerController = GetPlayerController();
     }
 
     private void InitInputSystem()
@@ -204,7 +253,9 @@ public class GameManager : MonoBehaviour
     private void OnESCKeyPressed()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0) return;
-        if (isOpenedQuestDialog) return;
+        if (isQuestDialogOpened) return;
+        if ((playerController.isFreezeMove || playerController.isFreezeCamera)
+            && !isPaused) return;
 
         if (!isPaused)
         {
@@ -214,5 +265,17 @@ public class GameManager : MonoBehaviour
         {
             ContinueGame(true);
         }
+    }
+}
+
+public class PlayerData
+{
+    public int mission;
+    public int quest;
+
+    public PlayerData(int mission, int quest)
+    {
+        this.mission = mission;
+        this.quest = quest;
     }
 }

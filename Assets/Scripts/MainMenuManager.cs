@@ -40,9 +40,6 @@ public class MainMenuManager : MonoBehaviour
                 case "ExitButton":
                     button.onClick.AddListener(gm.ExitGame);
                     break;
-
-                default:
-                    break;
             }
         }
     }
