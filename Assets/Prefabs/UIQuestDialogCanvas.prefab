@@ -867,7 +867,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Description
+  m_text: "Hello, lost friend!\nDon\u2019t understand how you ended up here and want
+    to get out?\nCollect 6 magic stars, and the gates to the unknown will open!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9c78cd9f6be24ed7bff83aeee1983f3, type: 2}
   m_sharedMaterial: {fileID: 3593991444663900707, guid: b9c78cd9f6be24ed7bff83aeee1983f3,
@@ -895,8 +896,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44
-  m_fontSizeBase: 44
+  m_fontSize: 34
+  m_fontSizeBase: 34
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
