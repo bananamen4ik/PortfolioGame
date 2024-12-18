@@ -13,9 +13,6 @@ public class Mission_1_Manager : MonoBehaviour
     private GameObject door_1_Camera;
 
     [SerializeField]
-    private GameObject door_3_Camera;
-
-    [SerializeField]
     private GameObject door_1;
 
     [SerializeField]
@@ -27,11 +24,20 @@ public class Mission_1_Manager : MonoBehaviour
     [SerializeField]
     private GameObject gemPrefab;
 
+    [SerializeField]
+    private GameObject fireflies;
+
     private GameManager gm;
     private PlayerController playerController;
 
     private readonly int needGems = 6;
     private int gems = 0;
+
+    public void Finish()
+    {
+        OpenDoor_3();
+        HideFireflies();
+    }
 
     public void PickUpGem()
     {
@@ -50,8 +56,7 @@ public class Mission_1_Manager : MonoBehaviour
         }
         else
         {
-            gm.ChangeCamera(playerController.characterCamera, door_3_Camera, 5);
-            OpenDoor_3();
+            Finish();
         }
 
         playerController.TakeAnimaion();
@@ -145,6 +150,16 @@ public class Mission_1_Manager : MonoBehaviour
         }
     }
 
+    private void ShowFireflies()
+    {
+        fireflies.SetActive(true);
+    }
+
+    private void HideFireflies()
+    {
+        fireflies.SetActive(false);
+    }
+
     private void StartQuest_1()
     {
         HideQuest_1_Dialog();
@@ -158,6 +173,7 @@ public class Mission_1_Manager : MonoBehaviour
         Invoke(nameof(OpenDoor_2), 1);
 
         SpawnGem();
+        ShowFireflies();
     }
 
     private void OpenDoor_1()
